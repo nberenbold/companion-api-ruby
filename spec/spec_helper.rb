@@ -11,4 +11,13 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before(:all) do
+    directory = File.join(File.dirname(__FILE__), "..", "tmp")
+    FileUtils.mkdir(directory) unless File.exist?(directory)
+
+    CompanionApi.configure do |config|
+      config.profile_directory = directory
+    end
+  end
 end

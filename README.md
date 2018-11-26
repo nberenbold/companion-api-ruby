@@ -22,7 +22,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+CompanionApi.configure do |config|
+  config.profile_directory = "PATH_TO_DIRECTORY_WITH_FILES"
+end
+```
+
+For rails put initialization into config/initializers/global.rb
+
+```ruby
+CompanionApi.configure do |config|
+  config.profile_directory = Rails.root.join("tmp", "profiles").to_s
+end
+```
 
 ## Development
 
