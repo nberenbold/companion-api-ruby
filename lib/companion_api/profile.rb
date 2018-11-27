@@ -6,6 +6,7 @@ module CompanionApi
 
     def initialize(profile_name)
       @file = File.join(CompanionApi.config.profile_directory, "#{profile_name}.json")
+      FileUtils.mkdir_p(File.dirname(@file)) unless File.exist?(File.dirname(@file))
       @settings = {}
 
       load
@@ -23,7 +24,7 @@ module CompanionApi
     protected
 
     def load
-      return save unless File.exist?(@file)
+      return save! unless File.exist?(@file)
 
       @settings = JSON.parse(open(@file).read, symbolize_names: true)
     end

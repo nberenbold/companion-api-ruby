@@ -30,7 +30,7 @@ CompanionApi.configure do |config|
 end
 ```
 
-For rails put initialization into config/initializers/global.rb
+For rails put initialization into config/initializers/companion_api.rb
 
 ```ruby
 CompanionApi.configure do |config|

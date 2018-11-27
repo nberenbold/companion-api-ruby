@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://xivapi.com'
   spec.license       = 'MIT'
 
+  spec.metadata      = { "source_code_uri" => "https://github.com/nberenbold/companion-api-ruby" }
+
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
@@ -28,9 +30,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '~> 5'
   spec.add_dependency 'faraday', '~> 0.9'
-  spec.add_dependency 'faraday_middleware'
-  spec.add_dependency 'httpclient'
-  spec.add_dependency 'nokogiri'
+  spec.add_dependency 'faraday_middleware', '~> 0.12.2'
+  spec.add_dependency 'httpclient', '~> 2.8.3'
+  spec.add_dependency 'nokogiri', '~> 1.8.5'
+  spec.add_dependency 'pbkdf2-ruby', '~> 0.2.1'
 
   spec.required_ruby_version = '>= 2.2.0'
 end
