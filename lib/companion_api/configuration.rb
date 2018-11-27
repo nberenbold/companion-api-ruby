@@ -5,7 +5,7 @@ module CompanionApi
     attr_accessor :directory
 
     def initialize
-      @directory = File.join(File.dirname(__FILE__), "..", "..", "config")
+      @directory = File.join(File.dirname(__FILE__), '..', '..', 'config')
     end
   end
 

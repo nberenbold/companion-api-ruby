@@ -1,25 +1,25 @@
 require 'faraday'
 require 'httpclient'
 require 'faraday_middleware'
-require "nokogiri"
+require 'nokogiri'
 
 require 'json'
 require 'base64'
 require 'openssl'
-require "securerandom"
-require "pbkdf2"
+require 'securerandom'
+require 'pbkdf2'
 
-require "active_support/core_ext/hash"
+require 'active_support/core_ext/hash'
 
-require "companion_api/version"
-require "companion_api/base"
-require "companion_api/configuration"
-require "companion_api/profile"
-require "companion_api/request"
-require "companion_api/error"
+require 'companion_api/version'
+require 'companion_api/base'
+require 'companion_api/configuration'
+require 'companion_api/profile'
+require 'companion_api/request'
+require 'companion_api/error'
 
-require "companion_api/resources/account"
-require "companion_api/resources/login"
+require 'companion_api/resources/account'
+require 'companion_api/resources/login'
 
 module CompanionApi
   class << self
@@ -36,7 +36,7 @@ module CompanionApi
     end
 
     def rsa
-      pem = File.read(File.join(CompanionApi.config.directory, "public-key.pem")).strip
+      pem = File.read(File.join(CompanionApi.config.directory, 'public-key.pem')).strip
       OpenSSL::PKey::RSA.new(Base64.decode64(pem))
     end
   end

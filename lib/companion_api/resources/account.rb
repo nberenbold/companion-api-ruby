@@ -42,7 +42,7 @@ module CompanionApi
         res = req.get!
         body = res.body
 
-        if !body.include?('cis_sessid') && body.include?("loginForm")
+        if !body.include?('cis_sessid') && body.include?('loginForm')
           html = Nokogiri::HTML(body)
           form = html.at_css("form[id='loginForm']")
           stored = form.at_css("input[name='_STORED_']")[:value]
@@ -69,13 +69,13 @@ module CompanionApi
 
         html = Nokogiri::HTML(body)
         form = html.at_css("form[name='mainForm']")
-        raise CompanionApi::Error.new("unexpected response received") if form.nil?
+        raise CompanionApi::Error, 'unexpected response received' if form.nil?
 
         cis_sessid = form.at_css("input[name='cis_sessid']")[:value]
 
         data = {
           "cis_sessid": cis_sessid,
-          "provision": "",
+          "provision": '',
           "_c": 1
         }
 
@@ -84,8 +84,8 @@ module CompanionApi
           absolute: true,
           # requestId: CompanionApi.uuid,
           query: {
-            token: @profile.get("token"),
-            uid: @profile.get("uid")
+            token: @profile.get('token'),
+            uid: @profile.get('uid')
           },
           return202: true,
           form: data
@@ -93,37 +93,37 @@ module CompanionApi
 
         res = req.post!
 
-        raise CompanionApi::Error.new('Login status could not be validated.') if res.status != 202
+        raise CompanionApi::Error, 'Login status could not be validated.' if res.status != 202
       end
 
       def login_url
-        @profile.set("userId", CompanionApi.uuid)
+        @profile.set('userId', CompanionApi.uuid)
 
         json = get_token
-        @profile.set("token", json["token"])
-        @profile.set("salt", json["salt"])
+        @profile.set('token', json['token'])
+        @profile.set('salt', json['salt'])
 
-        CompanionApi::Request::SQEX_AUTH_URI + "?" + {
-          'client_id'     => 'ffxiv_comapp',
-          'lang'          => 'en-us',
+        CompanionApi::Request::SQEX_AUTH_URI + '?' + {
+          'client_id' => 'ffxiv_comapp',
+          'lang' => 'en-us',
           'response_type' => 'code',
-          'redirect_uri'  => redirect_uri
+          'redirect_uri' => redirect_uri
         }.to_query
       end
 
       def redirect_uri
-        uid = CompanionApi.pbkdf2(@profile.get("userId"), @profile.get("salt"))
+        uid = CompanionApi.pbkdf2(@profile.get('userId'), @profile.get('salt'))
         @profile.set('uid', uid)
 
-        CompanionApi::Request::OAUTH_CALLBACK + "?" + {
-          'token'      => @profile.get('token'),
-          'uid'        => uid,
+        CompanionApi::Request::OAUTH_CALLBACK + '?' + {
+          'token' => @profile.get('token'),
+          'uid' => uid,
           'request_id' => CompanionApi.uuid
         }.to_query
       end
 
       def get_token
-        crypted_uuid = CompanionApi.rsa.public_encrypt(@profile.get("userId"))
+        crypted_uuid = CompanionApi.rsa.public_encrypt(@profile.get('userId'))
         uid = Base64.encode64(crypted_uuid)
 
         req = CompanionApi::Request.new(

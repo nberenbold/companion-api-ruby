@@ -24,11 +24,12 @@ module CompanionApi
 
     def load
       return save unless File.exist?(@file)
+
       @settings = JSON.parse(open(@file).read, symbolize_names: true)
     end
 
     def save
-      File.open(@file, "w") do |f|
+      File.open(@file, 'w') do |f|
         f.write(@settings.to_json)
       end
     end

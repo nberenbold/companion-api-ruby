@@ -1,7 +1,7 @@
 module CompanionApi
   class Request
-    SQEX_AUTH_URI     = "https://secure.square-enix.com/oauth/oa/oauthauth".freeze
-    SQEX_LOGIN_URI    = "https://secure.square-enix.com/oauth/oa/oauthlogin".freeze
+    SQEX_AUTH_URI     = 'https://secure.square-enix.com/oauth/oa/oauthauth'.freeze
+    SQEX_LOGIN_URI    = 'https://secure.square-enix.com/oauth/oa/oauthlogin'.freeze
     OAUTH_CALLBACK    = 'https://companion.finalfantasyxiv.com/api/0/auth/callback'.freeze
 
     URI     = 'https://companion.finalfantasyxiv.com'.freeze
@@ -12,7 +12,7 @@ module CompanionApi
 
     attr_accessor :headers
 
-    def initialize(args={})
+    def initialize(args = {})
       defaults = {
         version: VERSION,
         endpoint: nil,
@@ -26,17 +26,17 @@ module CompanionApi
 
       @args = args.reverse_merge(defaults)
 
-      raise ComapnionApi::Error.new("maximum redirects reached") if args[:redirects].to_i > 3
+      raise ComapnionApi::Error, 'maximum redirects reached' if args[:redirects].to_i > 3
 
-      @args[:version] = "" if @args[:uri].include?(URI_SE)
+      @args[:version] = '' if @args[:uri].include?(URI_SE)
 
       @headers = {
-        "Accept" => "*/*",
+        'Accept' => '*/*',
         'Accept-Language' => 'en-gb',
         'Accept-Encoding' => 'br, gzip, deflate',
-        'User-Agent'      => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
-        'request-id'      => @args[:requestId] || CompanionApi.uuid,
-        'token'           => @args[:token]
+        'User-Agent' => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
+        'request-id' => @args[:requestId] || CompanionApi.uuid,
+        'token' => @args[:token]
       }
 
       @headers = @headers.reverse_merge(args[:headers]) if args[:headers].present?
@@ -78,11 +78,11 @@ module CompanionApi
         sleep(0.5)
       end
 
-      raise CompanionApi::Error.new("could not get a valid response after 30 tries")
+      raise CompanionApi::Error, 'could not get a valid response after 30 tries'
     end
 
     def endpoint
-      return "" if @args[:absolute]
+      return '' if @args[:absolute]
 
       @args[:version] + @args[:endpoint]
     end

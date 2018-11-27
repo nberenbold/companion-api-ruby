@@ -12,10 +12,10 @@ module CompanionApi
           uri: CompanionApi::Request::URI,
           endpoint: '/login/auth',
           requestId: CompanionApi.uuid,
-          token: @profile.get("token"),
+          token: @profile.get('token'),
           query: {
-            token: @profile.get("token"),
-            uid: @profile.get("uid"),
+            token: @profile.get('token'),
+            uid: @profile.get('uid'),
             request_id: CompanionApi.uuid
           }
         )
