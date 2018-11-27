@@ -25,5 +25,9 @@ module CompanionApi
       res = @login.post_auth
       raise CompanionApi::Error, 'invalid response received' if res['status'] != 200
     end
+
+    def market
+      CompanionApi::Resources::Market.new(@profile)
+    end
   end
 end

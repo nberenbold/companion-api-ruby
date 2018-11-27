@@ -74,6 +74,7 @@ module CompanionApi
         raise CompanionApi::LoginError, 'Login status could not be validated.' if res.status != 202
 
         CompanionApi.refresh_uuid
+        true
       end
 
       def login_url

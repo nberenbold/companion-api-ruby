@@ -21,6 +21,7 @@ require 'companion_api/error'
 
 require 'companion_api/resources/account'
 require 'companion_api/resources/login'
+require 'companion_api/resources/market'
 
 module CompanionApi
   class << self
