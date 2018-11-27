@@ -42,7 +42,7 @@ module CompanionApi
       OpenSSL::PKey::RSA.new(Base64.decode64(pem))
     end
 
-    def debug(message, args={})
+    def debug(message, args = {})
       return if config.debug == false || config.logger.nil?
 
       config.logger.debug(format(message, args))

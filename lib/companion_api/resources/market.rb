@@ -7,40 +7,32 @@ module CompanionApi
         @profile = profile
       end
 
-      def item_market_listings(item_id)
-        req = CompanionApi::Request.new(
-          uri:      @profile.get('region'),
-          endpoint: "/market/items/catalog/#{item_id}",
-          token:    @profile.get("token")
-        )
+      def item_market_listings(item_id, hq: false)
+        endpoint = "/market/items/catalog/#{item_id}"
+        endpoint += "/hq" if hq
 
-        res = req.get!
-        json = JSON.parse(res.body)
+        request_result(endpoint)
+      end
 
-        format_result(json)
+      def market_listings_by_category(category_id)
+        request_result("/market/items/category/#{category_id}")
+      end
+
+      def transaction_history(catalog_id)
+        request_result("/market/items/history/catalog/#{catalog_id}")
       end
 
       protected
 
-      def format_result(json)
-        result = { "Prices" => [] }
+      def request_result(endpoint)
+        req = CompanionApi::Request.new(
+          uri:      @profile.get('region'),
+          endpoint: endpoint,
+          token:    @profile.get("token"),
+        )
 
-        json["entries"].each do |entry|
-          result["Prices"] << {
-            "UniqueID": entry["itemId"],
-            "Quantity": entry["stack"].to_i,
-            "ID": entry["catalogId"].to_i,
-            "CraftSignature": entry["signatureName"],
-            "IsCrafted": entry["isCrafted"],
-            "IsHQ": entry["hq"] == 1,
-            "PricePerUnit": entry["sellPrice"].to_i,
-            "PriceTotal": entry["sellPrice"].to_i * entry["stack"].to_i,
-            "RetainerName": entry["sellRetainerName"],
-            "Town": entry["registerTown"]
-          }
-        end
-
-        result
+        res = req.get!
+        JSON.parse(res.body)
       end
     end
   end

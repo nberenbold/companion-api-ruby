@@ -77,6 +77,8 @@ module CompanionApi
 
         CompanionApi.debug("received status %{status}", status: res.status)
 
+        raise CompanionApi::TokenExpiredError, 'token has expired' if res.status == 403
+
         return res if @args[:return202] || res.status != 202
 
         sleep(0.5)

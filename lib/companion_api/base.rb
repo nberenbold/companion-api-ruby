@@ -3,11 +3,13 @@ module CompanionApi
     attr_accessor :profile
     attr_accessor :account
     attr_accessor :login
+    attr_accessor :market
 
     def initialize(profile_name)
       @profile = Profile.new(profile_name)
       @account = CompanionApi::Resources::Account.new(@profile)
       @login = CompanionApi::Resources::Login.new(@profile)
+      @market = CompanionApi::Resources::Market.new(@profile)
     end
 
     def login!(username, password)
@@ -26,8 +28,8 @@ module CompanionApi
       raise CompanionApi::Error, 'invalid response received' if res['status'] != 200
     end
 
-    def market
-      CompanionApi::Resources::Market.new(@profile)
+    def loggedin?
+      @login.character.present?
     end
   end
 end

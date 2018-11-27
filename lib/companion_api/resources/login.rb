@@ -20,7 +20,7 @@ module CompanionApi
             token:      @profile.get('token'),
             uid:        @profile.get('uid'),
             request_id: CompanionApi.uuid,
-          }
+          },
         )
 
         res = req.post!
@@ -28,10 +28,12 @@ module CompanionApi
       end
 
       def characters
+        return @characters if @characters.present?
+
         req = CompanionApi::Request.new(
           uri:      CompanionApi::Request::URI,
           endpoint: '/login/characters',
-          token:    @profile.get("token")
+          token:    @profile.get("token"),
         )
 
         res = req.get!
@@ -50,9 +52,9 @@ module CompanionApi
           uri:      CompanionApi::Request::URI,
           endpoint: "/login/characters/#{cid}",
           token:    @profile.get("token"),
-          json: {
-            'appLocaleType' => 'EU'
-          }
+          json:     {
+            'appLocaleType' => 'EU',
+          },
         )
 
         res = req.post!
@@ -68,7 +70,7 @@ module CompanionApi
         req = CompanionApi::Request.new(
           uri:      @profile.get('region'),
           endpoint: '/login/character',
-          token:    @profile.get("token")
+          token:    @profile.get("token"),
         )
 
         res = req.get!

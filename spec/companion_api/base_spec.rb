@@ -17,4 +17,12 @@ RSpec.describe CompanionApi::Base do
 
     expect(api.login.select_character(character['cid'])).not_to be_empty
   end
+
+  it 'expects loggedin? to return true' do
+    api = described_class.new('test_profile')
+    character = api.login.characters.first
+    api.login.select_character(character['cid'])
+
+    expect(api.loggedin?).to eq(true)
+  end
 end
