@@ -5,7 +5,9 @@ RSpec.describe CompanionApi::Base do
   # end
 
   it "creates a valid login" do
+    json = JSON.parse(File.read(".test.credentials"))
+
     api = CompanionApi::Base.new("test_profile")
-    api.login!("", "")
+    api.login!(json["username"], json["password"])
   end
 end

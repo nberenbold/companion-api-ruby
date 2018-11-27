@@ -1,5 +1,5 @@
 module CompanionApi
-  module Models
+  module Resources
     class Login
       attr_accessor :profile
 
@@ -20,8 +20,8 @@ module CompanionApi
           }
         )
 
-        body = req.post!
-        JSON.parse(body)
+        res = req.post!
+        JSON.parse(res.body)
       end
     end
   end

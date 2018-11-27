@@ -16,9 +16,10 @@ require "companion_api/base"
 require "companion_api/configuration"
 require "companion_api/profile"
 require "companion_api/request"
+require "companion_api/error"
 
-require "companion_api/models/account"
-require "companion_api/models/login"
+require "companion_api/resources/account"
+require "companion_api/resources/login"
 
 module CompanionApi
   class << self

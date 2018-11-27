@@ -6,11 +6,13 @@ module CompanionApi
 
     def initialize(profile_name)
       @profile = Profile.new(profile_name)
-      @account = CompanionApi::Models::Account.new(@profile)
-      @login = CompanionApi::Models::Login.new(@profile)
+      @account = CompanionApi::Resources::Account.new(@profile)
+      @login = CompanionApi::Resources::Login.new(@profile)
     end
 
     def login!(username, password)
+      raise CompanionApi::Error.new("no username or password specified") if username.blank? || password.blank?
+
       @account.auto_login!(username, password)
     end
 
