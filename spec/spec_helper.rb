@@ -18,6 +18,7 @@ RSpec.configure do |config|
 
     CompanionApi.configure do |config|
       config.profile_directory = directory
+      config.debug = true
     end
   end
 end

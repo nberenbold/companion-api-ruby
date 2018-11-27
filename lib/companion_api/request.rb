@@ -14,14 +14,14 @@ module CompanionApi
 
     def initialize(args = {})
       defaults = {
-        version: VERSION,
-        endpoint: nil,
-        json: nil,
-        form: nil,
-        query: nil,
-        cookies: nil,
-        redirect: true,
-        return202: false
+        version:   VERSION,
+        endpoint:  nil,
+        json:      nil,
+        form:      nil,
+        query:     nil,
+        cookies:   nil,
+        redirect:  true,
+        return202: false,
       }
 
       @args = args.reverse_merge(defaults)
@@ -31,12 +31,12 @@ module CompanionApi
       @args[:version] = '' if @args[:uri].include?(URI_SE)
 
       @headers = {
-        'Accept' => '*/*',
+        'Accept'          => '*/*',
         'Accept-Language' => 'en-gb',
         'Accept-Encoding' => 'br, gzip, deflate',
-        'User-Agent' => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
-        'request-id' => @args[:requestId] || CompanionApi.uuid,
-        'token' => @args[:token]
+        'User-Agent'      => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
+        'request-id'      => @args[:requestId] || CompanionApi.uuid,
+        'token'           => @args[:token],
       }
 
       @headers = @headers.reverse_merge(args[:headers]) if args[:headers].present?

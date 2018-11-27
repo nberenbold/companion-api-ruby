@@ -13,7 +13,7 @@ module CompanionApi
 
     def set(key, value)
       @settings[key.to_sym] = value
-      save
+      save!
     end
 
     def get(key)
@@ -28,7 +28,7 @@ module CompanionApi
       @settings = JSON.parse(open(@file).read, symbolize_names: true)
     end
 
-    def save
+    def save!
       File.open(@file, 'w') do |f|
         f.write(@settings.to_json)
       end

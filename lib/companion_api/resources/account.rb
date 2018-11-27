@@ -34,9 +34,9 @@ module CompanionApi
 
       def auto_login!(username, password)
         req = CompanionApi::Request.new(
-          uri: login_url,
+          uri:       login_url,
           requestId: CompanionApi.uuid,
-          absolute: true
+          absolute:  true,
         )
 
         res = req.get!
@@ -51,16 +51,16 @@ module CompanionApi
 
           data = {
             "_STORED_": stored,
-            "sqexid": username,
-            "password": password
+            "sqexid":   username,
+            "password": password,
           }
 
           req = CompanionApi::Request.new(
-            uri: CompanionApi::Request::URI_SE,
-            endpoint: "/oauth/oa/#{action}",
+            uri:       CompanionApi::Request::URI_SE,
+            endpoint:  "/oauth/oa/#{action}",
             requestId: CompanionApi.uuid,
             # token: profile.get("token"),
-            form: data
+            form:      data,
           )
 
           res = req.post!
@@ -69,31 +69,31 @@ module CompanionApi
 
         html = Nokogiri::HTML(body)
         form = html.at_css("form[name='mainForm']")
-        raise CompanionApi::Error, 'unexpected response received' if form.nil?
+        raise CompanionApi::LoginError, 'unexpected response received' if form.nil?
 
         cis_sessid = form.at_css("input[name='cis_sessid']")[:value]
 
         data = {
           "cis_sessid": cis_sessid,
-          "provision": '',
-          "_c": 1
+          "provision":  '',
+          "_c":         1,
         }
 
         req = CompanionApi::Request.new(
-          uri: form[:action],
-          absolute: true,
+          uri:       form[:action],
+          absolute:  true,
           # requestId: CompanionApi.uuid,
-          query: {
+          query:     {
             token: @profile.get('token'),
-            uid: @profile.get('uid')
+            uid:   @profile.get('uid'),
           },
           return202: true,
-          form: data
+          form:      data,
         )
 
         res = req.post!
 
-        raise CompanionApi::Error, 'Login status could not be validated.' if res.status != 202
+        raise CompanionApi::LoginError, 'Login status could not be validated.' if res.status != 202
       end
 
       def login_url
@@ -104,10 +104,10 @@ module CompanionApi
         @profile.set('salt', json['salt'])
 
         CompanionApi::Request::SQEX_AUTH_URI + '?' + {
-          'client_id' => 'ffxiv_comapp',
-          'lang' => 'en-us',
+          'client_id'     => 'ffxiv_comapp',
+          'lang'          => 'en-us',
           'response_type' => 'code',
-          'redirect_uri' => redirect_uri
+          'redirect_uri'  => redirect_uri,
         }.to_query
       end
 
@@ -116,9 +116,9 @@ module CompanionApi
         @profile.set('uid', uid)
 
         CompanionApi::Request::OAUTH_CALLBACK + '?' + {
-          'token' => @profile.get('token'),
-          'uid' => uid,
-          'request_id' => CompanionApi.uuid
+          'token'      => @profile.get('token'),
+          'uid'        => uid,
+          'request_id' => CompanionApi.uuid,
         }.to_query
       end
 
@@ -127,9 +127,9 @@ module CompanionApi
         uid = Base64.encode64(crypted_uuid)
 
         req = CompanionApi::Request.new(
-          uri: CompanionApi::Request::URI,
+          uri:      CompanionApi::Request::URI,
           endpoint: '/login/token',
-          json: { 'platform' => PLATFORM_ANDROID, 'uid' => uid }
+          json:     { 'platform' => PLATFORM_ANDROID, 'uid' => uid },
         )
 
         res = req.post!

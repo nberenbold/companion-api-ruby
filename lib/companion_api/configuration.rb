@@ -4,8 +4,11 @@ module CompanionApi
 
     attr_accessor :directory
 
+    attr_accessor :debug
+
     def initialize
       @directory = File.join(File.dirname(__FILE__), '..', '..', 'config')
+      @debug = false
     end
   end
 
