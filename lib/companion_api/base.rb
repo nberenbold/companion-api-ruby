@@ -17,10 +17,13 @@ module CompanionApi
     end
 
     def token_auth!
-      @account.login!
+      @account.token_login!
+
+      url = @account.login_url
+      CompanionApi.config.logger.info("please visit #{url} and hit enter afterwards")
       gets
       res = @login.post_auth
-      res['status'] == 200
+      raise CompanionApi::Error, 'invalid response received' if res['status'] != 200
     end
   end
 end

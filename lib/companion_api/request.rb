@@ -53,6 +53,8 @@ module CompanionApi
     protected
 
     def execute!(method)
+      CompanionApi.debug("executing %{method} to endpoint %{endpoint} with url %{uri}", method: method, endpoint: endpoint, uri: @args[:uri])
+
       conn = Faraday.new(url: @args[:uri]) do |builder|
         # builder.response :logger
         builder.request :url_encoded
@@ -72,6 +74,8 @@ module CompanionApi
           req.headers = @headers
           req.body = body
         end
+
+        CompanionApi.debug("received status %{status}", status: res.status)
 
         return res if @args[:return202] || res.status != 202
 

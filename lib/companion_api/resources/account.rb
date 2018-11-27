@@ -10,28 +10,6 @@ module CompanionApi
         @profile = profile
       end
 
-      def login!
-        url = login_url
-
-        puts url
-
-        # if ($api->Login()->postAuth()->status === 200) {
-        #   echo "You're all loged in just fine!";
-        # } else {
-        #   echo "Could not confirm login authentication...";
-        # }
-
-        # $this->getLoginUrl();
-        #
-        # // attempt to auto-login
-        # $this->autoLoginToProfileAccount($username, $password);
-        #
-        # // authenticate
-        # if ((new Login())->postAuth()->status !== 200) {
-        #   throw new \Exception('Token status could not be validated');
-        # }
-      end
-
       def auto_login!(username, password)
         req = CompanionApi::Request.new(
           uri:       login_url,
@@ -94,6 +72,8 @@ module CompanionApi
         res = req.post!
 
         raise CompanionApi::LoginError, 'Login status could not be validated.' if res.status != 202
+
+        CompanionApi.refresh_uuid
       end
 
       def login_url

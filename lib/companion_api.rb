@@ -8,6 +8,7 @@ require 'base64'
 require 'openssl'
 require 'securerandom'
 require 'pbkdf2'
+require 'logger'
 
 require 'active_support/core_ext/hash'
 
@@ -38,6 +39,12 @@ module CompanionApi
     def rsa
       pem = File.read(File.join(CompanionApi.config.directory, 'public-key.pem')).strip
       OpenSSL::PKey::RSA.new(Base64.decode64(pem))
+    end
+
+    def debug(message, args={})
+      return if config.debug == false || config.logger.nil?
+
+      config.logger.debug(format(message, args))
     end
   end
 end
