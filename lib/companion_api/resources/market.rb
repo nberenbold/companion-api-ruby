@@ -25,8 +25,11 @@ module CompanionApi
       protected
 
       def request_result(endpoint)
+        region = @profile.get('region')
+        raise CompanionApi::Error, 'No region set in profile, login a character first' if region.blank?
+
         req = CompanionApi::Request.new(
-          uri:      @profile.get('region'),
+          uri:      region,
           endpoint: endpoint,
           token:    @profile.get("token"),
         )
