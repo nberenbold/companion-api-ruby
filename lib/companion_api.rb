@@ -1,6 +1,6 @@
 require 'faraday'
-require 'httpclient'
 require 'faraday_middleware'
+require 'faraday-cookie_jar'
 require 'nokogiri'
 
 require 'json'
@@ -26,11 +26,15 @@ require 'companion_api/resources/market'
 module CompanionApi
   class << self
     def uuid
-      @uuid ||= SecureRandom.uuid.upcase
+      @uuid ||= generate_uuid
     end
 
     def refresh_uuid
-      @uuid = SecureRandom.uuid.upcase
+      @uuid = generate_uuid
+    end
+
+    def generate_uuid
+      SecureRandom.uuid.upcase
     end
 
     def pbkdf2(value, salt)

@@ -30,14 +30,20 @@ module CompanionApi
       def characters
         return @characters if @characters.present?
 
-        req = CompanionApi::Request.new(
-          uri:      CompanionApi::Request::URI,
-          endpoint: '/login/characters',
-          token:    @profile.get("token"),
-        )
+        json = {}
+        3.times do
+          req = CompanionApi::Request.new(
+            uri:      CompanionApi::Request::URI,
+            endpoint: '/login/characters',
+            token:    @profile.get("token"),
+          )
 
-        res = req.get!
-        json = JSON.parse(res.body)
+          res = req.get!
+          json = JSON.parse(res.body)
+          break if json["accounts"].present?
+
+          sleep(0.5)
+        end
 
         raise CompanionApi::LoginError, 'no valid accounts found' if json["accounts"].blank?
 

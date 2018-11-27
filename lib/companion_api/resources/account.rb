@@ -73,6 +73,8 @@ module CompanionApi
 
         raise CompanionApi::LoginError, 'Login status could not be validated.' if res.status != 202
 
+        @profile.set("lastLogin", Time.now.to_i)
+
         CompanionApi.refresh_uuid
         true
       end

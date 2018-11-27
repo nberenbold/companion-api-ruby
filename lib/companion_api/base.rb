@@ -31,5 +31,14 @@ module CompanionApi
     def loggedin?
       @login.character.present?
     end
+
+    def valid_token?
+      last_login = @profile.get("lastLogin")
+      return false if last_login.blank?
+
+      diff = Time.now.to_i - last_login
+      # we use 12 hours for now to refresh tokens a bit more often and prevent expiring
+      diff < 12 * 60 * 60
+    end
   end
 end

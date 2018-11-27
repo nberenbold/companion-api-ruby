@@ -35,7 +35,7 @@ module CompanionApi
         'Accept-Language' => 'en-gb',
         'Accept-Encoding' => 'br, gzip, deflate',
         'User-Agent'      => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
-        'request-id'      => @args[:requestId] || CompanionApi.uuid,
+        'request-id'      => @args[:requestId] || CompanionApi.generate_uuid,
         'token'           => @args[:token],
       }
 
@@ -55,15 +55,18 @@ module CompanionApi
     def execute!(method)
       CompanionApi.debug("executing %{method} to endpoint %{endpoint} with url %{uri}", method: method, endpoint: endpoint, uri: @args[:uri])
 
+      # FileUtils.touch("/tmp/cookies.dat")
+
+      # jar = HTTP::CookieJar.new
+      # jar.load("/tmp/cookies.dat")
+
       conn = Faraday.new(url: @args[:uri]) do |builder|
         # builder.response :logger
         builder.request :url_encoded
         builder.use FaradayMiddleware::FollowRedirects
-        builder.adapter :httpclient
-
-        # builder.adapter :httpclient do |http|
-        #   http.set_cookie_store("/tmp/test.dat")
-        # end
+        # builder.use :cookie_jar, jar: jar
+        builder.use :cookie_jar
+        builder.adapter :net_http
       end
 
       30.times do
@@ -77,6 +80,7 @@ module CompanionApi
 
         CompanionApi.debug("received status %{status}", status: res.status)
 
+        raise CompanionApi::ApiError, res.body if res.status == 500
         raise CompanionApi::TokenExpiredError, 'token has expired' if res.status == 403
 
         return res if @args[:return202] || res.status != 202

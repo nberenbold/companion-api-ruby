@@ -32,7 +32,10 @@ module CompanionApi
         )
 
         res = req.get!
-        JSON.parse(res.body)
+        json = JSON.parse(res.body)
+        raise CompanionApi::ApiError, 'got an error message from companion api' if json["error"].present? && json["error"]["code"].present?
+
+        json
       end
     end
   end
