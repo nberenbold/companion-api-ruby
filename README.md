@@ -1,5 +1,7 @@
 # CompanionApi
 
+[![Gem Version](https://badge.fury.io/rb/companion_api.svg)](https://badge.fury.io/rb/companion_api)
+
 This gem provides a wrapper to the SE Companion App Api, right now it only supports the marketplace, you are free to add the other endpoints.
 
 This gem is basically a rewrite of the php Version from Vekien (https://github.com/xivapi/companion-php)
@@ -56,7 +58,7 @@ characters = api.login.characters
 api.login.select_character(characters.first['cid'])
 ```
 
-you can check if you are logged in to a character by using ```api.loggedin?```
+you can check if you are logged in to a character by using ```api.loggedin?``` in some situations the token is marked as valid but a ```CompanionApi::TokenExpiredError``` error is raised.
 
 ### Marketplace
 
@@ -75,6 +77,10 @@ result = api.market.item_market_listings(23_769, hq: true)
 result = api.market.transaction_history(5)
 >> result["history"]
 ```
+
+## Known Problems
+
+If you login in one thread and request data in another the request will fail and in some situations the token will get invalid. If you encounter such problems, make sure the login process is completed before.
 
 ## Development
 
