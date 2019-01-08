@@ -34,7 +34,7 @@ module CompanionApi
         'Accept'          => '*/*',
         'Accept-Language' => 'en-gb',
         'Accept-Encoding' => 'br, gzip, deflate',
-        'User-Agent'      => 'ffxivcomapp-e/1.0.3.0 CFNetwork/974.2.1 Darwin/18.0.0',
+        'User-Agent'      => 'ffxivcomapp-e/1.0.5.0 CFNetwork/976 Darwin/18.2.0',
         'request-id'      => @args[:requestId] || CompanionApi.generate_uuid,
         'token'           => @args[:token],
       }

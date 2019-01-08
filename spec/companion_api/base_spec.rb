@@ -25,4 +25,12 @@ RSpec.describe CompanionApi::Base do
 
     expect(api.loggedin?).to eq(true)
   end
+
+  it 'expects the world-status of the character to return Shiva' do
+    api = described_class.new('test_profile')
+    character = api.login.characters.first
+    api.login.select_character(character['cid'])
+
+    expect(api.login.character_status["world"]).to eq("Shiva")
+  end
 end

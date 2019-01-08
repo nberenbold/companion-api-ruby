@@ -83,6 +83,19 @@ module CompanionApi
         json = JSON.parse(res.body)
 
         @character = json
+
+        character_status
+      end
+
+      def character_status
+        req = CompanionApi::Request.new(
+          uri:      @profile.get('region'),
+          endpoint: '/character/login-status',
+          token:    @profile.get("token"),
+        )
+
+        res = req.get!
+        JSON.parse(res.body)
       end
     end
   end
